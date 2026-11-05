@@ -1,0 +1,233 @@
+:root {
+    --bg-main: #F7F6F3;
+    --text-main: #2B2A29;
+    --accent: #8C7A6B;
+    --cta: #4A3B32;
+    --container: #E3DDD6;
+    --green: #6AAA64;
+    --yellow: #C9B458;
+    --gray: #787C7E;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.game-container {
+    background-color: var(--container);
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 30px 25px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    text-align: center;
+}
+
+h1 {
+    color: var(--cta);
+    font-size: 2rem;
+    margin: 0 0 4px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    color: var(--accent);
+    font-size: 0.95rem;
+    margin: 0 0 25px;
+    font-style: italic;
+}
+
+/* Tablero */
+.wordle-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.wordle-row {
+    display: flex;
+    gap: 6px;
+}
+
+.wordle-cell {
+    width: 42px;
+    height: 42px;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+}
+
+.wordle-cell.green {
+    background-color: var(--green);
+    border-color: var(--green);
+    color: #fff;
+}
+
+.wordle-cell.yellow {
+    background-color: var(--yellow);
+    border-color: var(--yellow);
+    color: #fff;
+}
+
+.wordle-cell.gray {
+    background-color: var(--gray);
+    border-color: var(--gray);
+    color: #fff;
+}
+
+/* Entrada */
+.input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#guess-input {
+    flex: 1 1 220px;
+    padding: 12px 16px;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    outline: none;
+    text-transform: uppercase;
+    transition: border-color 0.2s;
+}
+
+#guess-input:focus {
+    border-color: var(--cta);
+}
+
+#guess-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#guess-btn {
+    padding: 12px 28px;
+    background-color: var(--cta);
+    color: var(--bg-main);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#guess-btn:hover:not(:disabled) {
+    background-color: var(--text-main);
+}
+
+#guess-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Descripción en inglés */
+.description-panel {
+    background-color: var(--bg-main);
+    border-left: 5px solid var(--accent);
+    padding: 15px 20px;
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+    margin-bottom: 15px;
+    min-height: 70px;
+}
+
+.description-panel p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.message {
+    font-weight: 600;
+    color: var(--cta);
+    min-height: 24px;
+    font-size: 0.95rem;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(43, 42, 41, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: var(--bg-main);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content h2 {
+    color: var(--cta);
+    margin: 0 0 15px;
+    font-size: 1.4rem;
+}
+
+.modal-content p {
+    color: var(--text-main);
+    margin: 0 0 25px;
+    line-height: 1.5;
+}
+
+#modal-btn {
+    padding: 12px 32px;
+    background-color: var(--cta);
+    color: var(--bg-main);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#modal-btn:hover {
+    background-color: var(--text-main);
+}

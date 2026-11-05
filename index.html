@@ -4,371 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LET US PREY · Wordle</title>
+
     <!-- PyScript -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
-    <style>
-        /* Paleta de colores solicitada */
-        :root {
-            --bg-main: #F7F6F3;
-            --text-main: #2B2A29;
-            --accent: #8C7A6B;
-            --cta: #4A3B32;
-            --container: #E3DDD6;
-        }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .game-container {
-            background-color: var(--container);
-            border-radius: 16px;
-            padding: 30px 25px;
-            max-width: 700px;
-            width: 100%;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            text-align: center;
-            border: 1px solid var(--accent);
-        }
-
-        h1 {
-            color: var(--cta);
-            font-size: 2rem;
-            margin-bottom: 4px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            color: var(--accent);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-            font-style: italic;
-        }
-
-        /* Tablero */
-        .wordle-board {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-
-        .wordle-row {
-            display: flex;
-            gap: 6px;
-        }
-
-        .wordle-cell {
-            width: 42px;
-            height: 42px;
-            border: 2px solid var(--accent);
-            border-radius: 6px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            transition: background-color 0.2s, border-color 0.2s;
-            flex-shrink: 0;
-        }
-
-        /* Colores tipo Wordle (verde, amarillo, gris) */
-        .wordle-cell.green {
-            background-color: #6AAA64;
-            border-color: #6AAA64;
-            color: #fff;
-        }
-
-        .wordle-cell.yellow {
-            background-color: #C9B458;
-            border-color: #C9B458;
-            color: #fff;
-        }
-
-        .wordle-cell.gray {
-            background-color: #787C7E;
-            border-color: #787C7E;
-            color: #fff;
-        }
-
-        /* Zona de entrada */
-        .input-area {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        #guess-input {
-            flex: 1 1 200px;
-            padding: 12px 16px;
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            font-size: 1rem;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        #guess-input:focus {
-            border-color: var(--cta);
-        }
-
-        #guess-btn {
-            padding: 12px 28px;
-            background-color: var(--cta);
-            color: var(--bg-main);
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        #guess-btn:hover {
-            background-color: var(--text-main);
-        }
-
-        /* Descripción en inglés */
-        .description-panel {
-            background-color: var(--bg-main);
-            border-left: 5px solid var(--accent);
-            padding: 15px 20px;
-            border-radius: 0 8px 8px 0;
-            text-align: left;
-            margin-bottom: 15px;
-            min-height: 70px;
-        }
-
-        .description-panel p {
-            margin: 0;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .message {
-            font-weight: 600;
-            color: var(--cta);
-            min-height: 24px;
-            font-size: 0.95rem;
-        }
-    </style>
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div class="game-container">
-        <h1>LET US PREY</h1>
-        <p class="subtitle">Guess the phrase from the description</p>
+    <main class="game-container">
+        <header>
+            <h1>LET US PREY</h1>
+            <p class="subtitle">Guess the phrase from the description</p>
+        </header>
 
-        <!-- Tablero Wordle -->
         <div id="wordle-board" class="wordle-board"></div>
 
-        <!-- Entrada de texto -->
         <div class="input-area">
-            <input type="text" id="guess-input" placeholder="Type your guess..." autocomplete="off" py-keydown="submit_guess">
+            <input
+                type="text"
+                id="guess-input"
+                placeholder="Type your guess..."
+                autocomplete="off"
+                spellcheck="false"
+                py-keydown="handle_keydown">
             <button id="guess-btn" py-click="submit_guess">Guess</button>
         </div>
 
-        <!-- Descripción en inglés -->
         <div class="description-panel">
-            <p id="description-text">Description will appear here.</p>
+            <p id="description-text">Loading...</p>
         </div>
 
-        <!-- Mensajes de estado -->
         <div id="message" class="message"></div>
+    </main>
+
+    <!-- Modal para pasar a la siguiente palabra -->
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <h2 id="modal-title"></h2>
+            <p id="modal-text"></p>
+            <button id="modal-btn" py-click="on_modal_click"></button>
+        </div>
     </div>
 
-    <!-- Lógica del juego en Python (PyScript) -->
-    <py-script>
-        import js
-        from pyscript import document, window
-
-        # Palabras y descripciones en INGLÉS
-        words = [
-            {
-                "word": "DRILLING",
-                "description": "The process of tactically and intensely interrogating, pressuring, or harassing a suspect to extract information or subdue them."
-            },
-            {
-                "word": "YAHOO BOYS",
-                "description": "Colloquial term for young individuals involved in cybercrime, online scams, and internet fraud."
-            },
-            {
-                "word": "GO PUNISH",
-                "description": "Emphatic expression of warning or threat that predicts negative consequences or moral punishment for someone."
-            },
-            {
-                "word": "CATCH AND TRANSFER",
-                "description": "Method of extortion or quick street transaction that seeks to demand cash payments or instant transfers after a detention."
-            },
-            {
-                "word": "SHOUTING",
-                "description": "Act of issuing orders or shouting loudly from a distance to try to stop or intimidate a suspect."
-            },
-            {
-                "word": "NIGERIAN PIDGIN",
-                "description": "Linguistic variety and creole dialect that combines English with local languages for informal daily communication."
-            },
-            {
-                "word": "NAIRA",
-                "description": "Currency of Nigeria."
-            }
-        ]
-
-        current_word_index = 0
-        attempts = []
-        max_attempts = 6
-
-        def init_game():
-            """Reinicia el tablero y carga la palabra actual."""
-            global attempts
-            attempts = []
-            word_data = words[current_word_index]
-            target = word_data["word"].upper()
-            board = document.getElementById("wordle-board")
-            board.innerHTML = ""
-
-            # Calcula un tamaño de celda adaptable para frases largas
-            max_width = 560  # ancho máximo aproximado del tablero en px
-            cell_size = min(42, max_width // len(target))
-            cell_size = max(cell_size, 24)  # mínimo 24px para que sea legible
-
-            # Crea las filas y celdas
-            for i in range(max_attempts):
-                row = document.createElement("div")
-                row.className = "wordle-row"
-                row.id = f"row-{i}"
-                for j in range(len(target)):
-                    cell = document.createElement("div")
-                    cell.className = "wordle-cell"
-                    cell.id = f"cell-{i}-{j}"
-                    cell.style.width = f"{cell_size}px"
-                    cell.style.height = f"{cell_size}px"
-                    cell.style.fontSize = f"{max(0.7, cell_size / 45)}rem"
-                    row.appendChild(cell)
-                board.appendChild(row)
-
-            # Muestra la descripción en inglés
-            document.getElementById("description-text").innerText = word_data["description"]
-            document.getElementById("message").innerText = ""
-            document.getElementById("guess-input").value = ""
-            document.getElementById("guess-input").disabled = False
-            document.getElementById("guess-btn").disabled = False
-
-        def check_guess(guess, target):
-            """Devuelve una lista con 'green', 'yellow' o 'gray' para cada letra."""
-            guess = guess.upper()
-            target = target.upper()
-            if len(guess) != len(target):
-                return None
-
-            result = []
-            target_chars = list(target)
-
-            # Primera pasada: aciertos en posición correcta (verde)
-            for i in range(len(target)):
-                if guess[i] == target[i]:
-                    result.append("green")
-                    target_chars[i] = None
-                else:
-                    result.append(None)
-
-            # Segunda pasada: letras presentes pero en otra posición (amarillo)
-            for i in range(len(target)):
-                if result[i] is None:
-                    if guess[i] in target_chars:
-                        result[i] = "yellow"
-                        target_chars[target_chars.index(guess[i])] = None
-                    else:
-                        result[i] = "gray"
-
-            return result
-
-        def submit_guess(*args, **kwargs):
-            """Se ejecuta al pulsar el botón o presionar Enter."""
-            global attempts
-            if len(attempts) >= max_attempts:
-                document.getElementById("message").innerText = "No more attempts for this word."
-                return
-
-            guess_input = document.getElementById("guess-input")
-            guess = guess_input.value.strip().upper()
-            target = words[current_word_index]["word"].upper()
-
-            if not guess:
-                document.getElementById("message").innerText = "Please enter a guess."
-                return
-
-            if len(guess) != len(target):
-                document.getElementById("message").innerText = f"Guess must be {len(target)} characters long."
-                return
-
-            feedback = check_guess(guess, target)
-            if feedback is None:
-                document.getElementById("message").innerText = "Invalid guess."
-                return
-
-            # Rellena la fila con los colores
-            row_index = len(attempts)
-            for i, status in enumerate(feedback):
-                cell = document.getElementById(f"cell-{row_index}-{i}")
-                cell.innerText = guess[i]
-                cell.className = f"wordle-cell {status}"
-
-            attempts.append(guess)
-            guess_input.value = ""
-
-            if guess == target:
-                document.getElementById("message").innerText = " Correct! "
-                next_word_prompt()
-            else:
-                if len(attempts) >= max_attempts:
-                    document.getElementById("message").innerText = f"Out of attempts. The word was: {target}"
-                    next_word_prompt()
-                else:
-                    remaining = max_attempts - len(attempts)
-                    document.getElementById("message").innerText = f"Incorrect. {remaining} attempts left."
-
-        def next_word_prompt():
-            """Pregunta si se quiere pasar a la siguiente palabra."""
-            global current_word_index
-            if current_word_index < len(words) - 1:
-                if window.confirm("✅ Correct! Do you want to move to the next word?"):
-                    current_word_index += 1
-                    init_game()
-                else:
-                    document.getElementById("message").innerText = "⏸️ Game paused. Refresh the page to play again."
-            else:
-                document.getElementById("message").innerText = "🎉 Congratulations! You've completed all words!"
-                document.getElementById("guess-input").disabled = True
-                document.getElementById("guess-btn").disabled = True
-
-        # Inicia el juego al cargar la página
-        init_game()
-    </py-script>
+    <!-- Lógica del juego -->
+    <script type="py" src="./game.py"></script>
 </body>
 </html>
