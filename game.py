@@ -210,8 +210,15 @@ def show_modal(mode, title, body):
     is_last = current_index >= len(WORDS) - 1
     el("modal-btn").innerText = "Finish" if is_last else "Next word"
 
+    # Buscar el contenedor del modal por id, con fallback a selector de clase
     content = el("modal-content")
-    content.className = f"modal-content {mode}"
+    if content is None:
+        content = document.querySelector(".modal-content")
+
+    if content is not None:
+        content.classList.remove("win")
+        content.classList.remove("lose")
+        content.classList.add(mode)
 
     el("modal").classList.remove("hidden")
 
