@@ -1,55 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LET US PREY · Wordle</title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>LET US PREY · Wordle</title>
 
-    <!-- PyScript -->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css">
-    <script type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
+		<!-- PyScript -->
+		<link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css">
+		<script type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
 
-    <!-- Estilos propios -->
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+		<!-- Estilos propios -->
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
 
-    <main class="game-container">
-        <header>
-            <h1>LET US PREY</h1>
-            <p class="subtitle">Guess the phrase from the description</p>
-        </header>
+		<main class="game-container">
+			<header>
+				<h1>LET US PREY</h1>
+				<p class="subtitle">Guess the phrase from the description</p>
+			</header>
 
-        <div id="wordle-board" class="wordle-board"></div>
+			<div id="wordle-board" class="wordle-board"></div>
 
-        <div class="input-area">
-            <input
-                type="text"
-                id="guess-input"
-                placeholder="Type your guess..."
-                autocomplete="off"
-                spellcheck="false"
-                py-keydown="handle_keydown">
-            <button id="guess-btn" py-click="submit_guess">Guess</button>
-        </div>
+			<div class="input-area">
+				<input
+						type="text"
+						id="guess-input"
+						placeholder="Type your guess..."
+						autocomplete="off"
+						spellcheck="false"
+						py-keydown="handle_keydown">
+				<button id="guess-btn" py-click="submit_guess">Guess</button>
+			</div>
 
-        <div class="description-panel">
-            <p id="description-text">Loading...</p>
-        </div>
+			<div class="description-panel">
+				<p id="description-text">Loading...</p>
+			</div>
 
-        <div id="message" class="message"></div>
-    </main>
+			<div id="message" class="message"></div>
+		</main>
 
-    <!-- Modal para pasar a la siguiente palabra -->
-    <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
-        <div class="modal-content" class="modal-content">
-            <h2 id="modal-title"></h2>
-            <p id="modal-text"></p>
-            <button id="modal-btn" py-click="on_modal_click"></button>
-        </div>
-    </div>
+		<!-- Modal para pasar a la siguiente palabra -->
+		<div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+			<div id="modal-content" class="modal-content">
+				<h2 id="modal-title"></h2>
+				<p id="modal-text"></p>
+				<button id="modal-btn" py-click="on_modal_click"></button>
+			</div>
+		</div>
 
-    <!-- Lógica del juego -->
-    <script type="py" src="./game.py"></script>
-</body>
+		<!-- Lógica del juego -->
+		<script type="py" src="./game.py"></script>
+	</body>
 </html>
