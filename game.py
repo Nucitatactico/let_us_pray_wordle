@@ -56,7 +56,6 @@ def build_board(target):
     board = el("wordle-board")
     board.innerHTML = ""
 
-    # Tamaño de celda adaptativo según longitud de la frase
     cell_size = max(24, min(42, 540 // len(target)))
 
     for row_idx in range(MAX_ATTEMPTS):
@@ -74,17 +73,14 @@ def build_board(target):
 
 
 def compute_feedback(guess, target):
-    """Devuelve lista con 'green', 'yellow' o 'gray' por letra."""
     result = [None] * len(target)
     remaining = list(target)
 
-    # Primer pase: verdes
     for i in range(len(target)):
         if guess[i] == target[i]:
             result[i] = "green"
             remaining[i] = None
 
-    # Segundo pase: amarillos y grises
     for i in range(len(target)):
         if result[i] is None:
             if guess[i] in remaining:
@@ -107,7 +103,10 @@ def init_game():
     build_board(target)
 
     el("description-text").innerText = word_data["description"]
-    el("message").innerText = ""
+
+    message_el = el("message")
+    message_el.innerText = ""
+    message_el.className = "message"
 
     input_el = el("guess-input")
     input_el.value = ""
@@ -158,7 +157,7 @@ def submit_guess(*args, **kwargs):
 
 
 def finish_word(won):
-    """Se ejecuta al ganar o al quedarse sin intentos. Abre el modal."""
+    """Punto único de salida: victoria o derrota. Nunca mezcla mensajes."""
     input_el = el("guess-input")
     input_el.disabled = True
     el("guess-btn").disabled = True
@@ -166,33 +165,53 @@ def finish_word(won):
     target = WORDS[current_index]["word"]
     is_last = current_index >= len(WORDS) - 1
 
-    if won:
-        el("message").innerText = "Correct."
-        title = "Correct."
-        body = f"The phrase was: {target}"
-    else:
-        el("message").innerText = f"Out of attempts. The phrase was: {target}"
-        title = "Out of attempts"
-        body = f"The phrase was: {target}"
+    if won is True:
+        message_el = el("message")
+        message_el.innerText = "Correct."
+        message_el.className = "message win"
 
-    if is_last:
-        if won:
-            title = "Congratulations"
-            body = "You have completed all words. Refresh the page to play again."
+        if is_last:
+            show_modal(
+                mode="win",
+                title="Congratulations",
+                body="You have completed all words.",
+            )
         else:
-            title = "End of game"
-            body = f"You reached the last word. The phrase was: {target}"
+            show_modal(
+                mode="win",
+                title="Correct",
+                body="You guessed the word. Ready for the next one?",
+            )
+    else:
+        # ---------- DERROTA ----------
+        message_el = el("message")
+        message_el.innerText = f"Out of attempts. The word was: {target}"
+        message_el.className = "message lose"
 
-    show_modal(title, body)
+        if is_last:
+            show_modal(
+                mode="lose",
+                title="End of game",
+                body=f"Out of attempts. The word was: {target}",
+            )
+        else:
+            show_modal(
+                mode="lose",
+                title="Out of attempts",
+                body=f"The word was: {target}",
+            )
 
 
 # Modal
-def show_modal(title, body):
+def show_modal(mode, title, body):
     el("modal-title").innerText = title
     el("modal-text").innerText = body
 
     is_last = current_index >= len(WORDS) - 1
     el("modal-btn").innerText = "Finish" if is_last else "Next word"
+
+    content = el("modal-content")
+    content.className = f"modal-content {mode}"
 
     el("modal").classList.remove("hidden")
 

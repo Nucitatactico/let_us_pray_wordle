@@ -231,3 +231,20 @@ h1 {
 #modal-btn:hover {
     background-color: var(--text-main);
 }
+/* Diferenciación visual del modal según resultado */
+.modal-content.win {
+    border: 2px solid var(--green);
+}
+
+.modal-content.lose {
+    border: 2px solid var(--accent);
+}
+
+/* Colores del mensaje inferior */
+.message.win {
+    color: var(--green);
+}
+
+.message.lose {
+    color: var(--cta);
+}
